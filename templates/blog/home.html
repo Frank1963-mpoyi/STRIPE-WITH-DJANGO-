@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Django + Stripe Checkout</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
+    
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+</head>
+<body>
+
+    
+<section class="section mt-5 justify-content-center text-align-center ">
+    <div class="container ">
+        <h3 class="text-align-center mb-3">Good Product Ever</h3>
+        <img src="{% static 'blog/images/shirt.jpg' %}" alt=""><br/>
+        <button class="button is-primary mt-5" id="submitBtn">Purchase!</button>
+    </div>
+</section>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+    
+
+
+<!-- stripe link -->
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+   
+
+    const submitBtn = document.querySelector('#submitBtn') // grab the buuton for event handler
+    
+    submitBtn.addEventListener('click', event=> { 
+
+        // new for ajax call 
+        fetch('/checkout/') // after user click the buuton this fetch('/checkout/') is to fetch public key from this endpoint or url checkout in django urls.py
+
+        .then((result) => {return result.json() }) //the data will be tranform in json format
+        .then((data) => {// data available which is : session id and public key
+        
+
+            var stripe = Stripe(data.publicKey)  // use the the public key to create a new instance of the  stripe  // public key variable from views.py 
+            
+            
+            //Redirect to the checkout page for the user to finish their purchase
+            stripe.redirectToCheckout({
+
+            sessionId : data.session_id // session id from our context in views.py 
+
+            }).then(function(result){
+
+            });
+
+            })
+
+        })
+    
+</script>
+
+</body>
+</html>
+
+
+
