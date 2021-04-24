@@ -1,23 +1,25 @@
 import os 
-from pathlib import Path
+from pathlib                import      Path
+from decouple               import      config
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-rnx_+qu&*pz(_(#(*sc5&pug9x+x8id1e5$arb_-2sf0d+z*w%'
+
+SECRET_KEY = config('SECRET_KEY')
 
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+DEBUG = config('DEBUG')
 
 
 ALLOWED_HOSTS = []
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -62,8 +64,6 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -72,8 +72,6 @@ DATABASES = {
 }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -92,8 +90,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -108,19 +104,24 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 
+PROJECT_PATH = os.path.join(BASE_DIR)
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(PROJECT_PATH, 'static')
 ]
 
+STATIC_ROOT = os.path.join(PROJECT_PATH, 'static', 'staticfiles')
+
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
 
 
 
 
-
-
-STRIPE_PUBLISHABLE_KEY= 'pk_test_51I8IgYH5FGERXivQk0hNGJ6O1OiLqNez12vyz2gzqK80IjK5ujdfut2AaVttzV2FRKCzNqFyds1z6Ik5fFSbwrcW00zoTjorcD'
-STRIPE_SECRET_KEY = 'sk_test_51I8IgYH5FGERXivQRzUk4tvuIbXhfQjKDZjxu0n8yNKrKyEvwZgPGWvAvbsE7gw1cyc5JzdfAnRhSLBUVFWDum6400wGnA5iuA'
+STRIPE_PUBLISHABLE_KEY= config('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
 
 
 

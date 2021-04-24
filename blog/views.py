@@ -57,9 +57,9 @@ class SuccessView(TemplateView):
 
 class CancelledView(TemplateView):
     template_name = 'blog/cancelled.html'
-   
-   
-   
+
+
+
     
 @csrf_exempt    
 def stripe_webhook(request):
@@ -94,3 +94,5 @@ def stripe_webhook(request):
 
 #we must specify the endpoint at the end when it finish to run it will give you webhook secret
 #stripe listen --forward-to localhost:8000/stripe_webhookt/ 
+
+#  4242 4242 4242 4242 to test a card 

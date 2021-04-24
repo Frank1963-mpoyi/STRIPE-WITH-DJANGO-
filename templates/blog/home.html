@@ -1,74 +1,130 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Django + Stripe Checkout</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
-    
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
-    
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-</head>
-<body>
 
-    
-<section class="section mt-5 justify-content-center text-align-center ">
-    <div class="container ">
-        <h3 class="text-align-center mb-3">Good Product Ever</h3>
-        <img src="{% static 'blog/images/shirt.jpg' %}" alt=""><br/>
-        <button class="button is-primary mt-5" id="submitBtn">Purchase!</button>
-    </div>
-</section>
+{% block title %} FRUIT LIST {% endblock title%}
+
+
+
+{% block stylesheet %} 
+    <link rel="stylesheet" href="{% static 'blog/css/home.css' %}">
+{% endblock stylesheet %}
 
 
 
 
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" ></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
-    
+{% block content %}
 
-
-<!-- stripe link -->
-<script src="https://js.stripe.com/v3/"></script>
-
-<script>
-   
-
-    const submitBtn = document.querySelector('#submitBtn') // grab the buuton for event handler
-    
-    submitBtn.addEventListener('click', event=> { 
-
-        // new for ajax call 
-        fetch('/checkout/') // after user click the buuton this fetch('/checkout/') is to fetch public key from this endpoint or url checkout in django urls.py
-
-        .then((result) => {return result.json() }) //the data will be tranform in json format
-        .then((data) => {// data available which is : session id and public key
+<style>
         
+    .products{
+        display: flex;
+        flex-direction: row;
+        margin-left: 10px;
+        justify-content: space-between;
+        align-items: center;
+        
+    }
 
-            var stripe = Stripe(data.publicKey)  // use the the public key to create a new instance of the  stripe  // public key variable from views.py 
+    .single-item img{
+        width: 400px;
+        height: 200px
+    }
+
+    h3{
+        text-align: center;
+        font-weight: 500;
+        font-size: 18px;
+    }
+</style>
+
+
+    <div class="container section mt-5  text-align-center">
+        <div class="products ">
+            <div class="single-item mr-3 ">
+                <img src="{% static 'blog/images/potatoes.jpg' %}" alt=""><br/>
+                <h3 class="text-align-center mt-3">POTATOES</h3>
+                <button class="button is-primary mt-5" id="submitBtn">Buy</button>
+            </div>
+
+            <div class="single-item mr-3">
+                <img src="{% static 'blog/images/spinach.png' %}" alt=""><br/>
+                <h3 class="text-align-center mt-3">SPINACH 12 each</h3>
+                <button class="button is-primary mt-5" id="submitBtn">Buy</button>
+            </div>
+
+            <div class="single-item mr-3">
+                <img src="{% static 'blog/images/banana.jpg' %}" alt=""><br/>
+                <h3 class="text-align-center mt-3">BANABA R 3 each</h3>
+                <button class="button is-primary mt-5" id="submitBtn">Buy</button>
+            </div>
+
+            <div class="single-item mr-3" >
+                <img src="{% static 'blog/images/okra.jpg' %}" alt=""><br/>
+                <h3 class="text-align-center mt-3">OKRA R 35 px</h3>
+                <button class="button is-primary mt-5" id="submitBtn">Buy</button>
+            </div>
+
+            <div class="single-item  mr-3 ">
+                <img src="{% static 'blog/images/apple.jpg' %} " alt=""><br/>
+                <h3 class="text-align-center mt-3">APPLE R2 each</h3>
+                <button class="button is-primary mt-5" id="submitBtn">Buy</button>
+            </div>
+
+            <div class="single-item ">
+                <img src="{% static 'blog/images/avocado.jpg' %}" alt=""><br/>
+                <h3 class="text-align-center mt-3">AVOCADO R 50 each</h3>
+                <button class="button is-primary mt-5" id="submitBtn">Buy</button>
+            </div>
+        </div>
+       
+        
+        
+    </div>
+
+
+
+
+    <!-- Javascript -->
+
+    <script>
+        const submitBtn = document.querySelector('#submitBtn') // grab the buuton for event handler
+
+        submitBtn.addEventListener('click', event=> { 
+
+            // new for ajax call 
+            fetch('/checkout/') // after user click the buuton this fetch('/checkout/') is to fetch public key from this endpoint or url checkout in django urls.py
+
+            .then((result) => {return result.json() }) //the data will be tranform in json format
+            .then((data) => {// data available which is : session id and public key
             
-            
-            //Redirect to the checkout page for the user to finish their purchase
-            stripe.redirectToCheckout({
 
-            sessionId : data.session_id // session id from our context in views.py 
+                var stripe = Stripe(data.publicKey)  // use the the public key to create a new instance of the  stripe  // public key variable from views.py 
+                
+                
+                //Redirect to the checkout page for the user to finish their purchase
+                stripe.redirectToCheckout({
 
-            }).then(function(result){
+                sessionId : data.session_id // session id from our context in views.py 
 
-            });
+                }).then(function(result){
+
+                });
+
+                })
 
             })
 
-        })
-    
-</script>
+    </script>
+{% endblock content %}
 
-</body>
-</html>
+
+
+
+
+
+
+
+
 
 
 
